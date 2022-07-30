@@ -40,9 +40,6 @@ public class Deposite extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Banco banco = new Banco();
 		List<Conta> lista = banco.getContas();
-		Extrato extrato = new Extrato();
-		
-		Date dateAtual = new Date();  
 		
 		String inputValor = request.getParameter("valor");
 		String inputConta = request.getParameter("conta");
@@ -57,11 +54,8 @@ public class Deposite extends HttpServlet {
 		request.setAttribute("valor", valor);
 		request.setAttribute("saldoAtual", account.getSaldo());
 		
-		extrato.setTipoExtrato("Deposito");
-		extrato.setValor(valor);
-		extrato.setSaldoMomento(account.getSaldo());
-		extrato.setConta(account);
-		extrato.setDataCadastro(dateAtual);	
+		Date dataAtual = new Date();
+		Extrato extrato = new Extrato("Deposito", valor, account.getSaldo(), account, dataAtual);
 	    
 		banco.adicionaExtrato(extrato);
 		

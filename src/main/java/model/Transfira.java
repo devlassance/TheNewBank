@@ -35,10 +35,6 @@ public class Transfira extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Banco banco = new Banco();
 		List<Conta> lista = banco.getContas();
-		Extrato extrato = new Extrato();
-		Extrato extratoBeneficiario = new Extrato();
-		
-		Date dataAtual = new Date();
 		
 		String inputBeneficiario = request.getParameter("contaBeneficiaria");
 		String inputTitular = request.getParameter("contaTitular");
@@ -61,19 +57,12 @@ public class Transfira extends HttpServlet {
 		
 		request.setAttribute("nomeBeneficiario", beneficiario.getTitular().getNome());
 		request.setAttribute("contaBeneficiario", beneficiario.getConta());
+			
+		Date dataAtual = new Date();
 		
-		extrato.setTipoExtrato("Transferência");
-		extrato.setValor(-valor);
-		extrato.setSaldoMomento(titular.getSaldo());
-		extrato.setConta(titular);
-		extrato.setDataCadastro(dataAtual);
-		
-		extratoBeneficiario.setTipoExtrato("Transferência");
-		extratoBeneficiario.setValor(valor);
-		extratoBeneficiario.setSaldoMomento(beneficiario.getSaldo());
-		extratoBeneficiario.setConta(beneficiario);
-		extratoBeneficiario.setDataCadastro(dataAtual);
-		
+		Extrato extrato = new Extrato("Transferência", -valor, titular.getSaldo(), titular, dataAtual);
+		Extrato extratoBeneficiario = new Extrato("Transferência", valor, beneficiario.getSaldo(), beneficiario, dataAtual);
+				
 		banco.adicionaExtrato(extrato);
 		banco.adicionaExtrato(extratoBeneficiario);
 		

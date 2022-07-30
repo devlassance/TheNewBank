@@ -37,9 +37,6 @@ public class Saque extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Banco banco = new Banco();
 		List<Conta> lista = banco.getContas();
-		Extrato extrato = new Extrato();
-		
-		Date dataAtual = new Date();
 		
 		String inputValor = request.getParameter("valor");
 		String inputConta = request.getParameter("conta");
@@ -54,12 +51,9 @@ public class Saque extends HttpServlet {
 		request.setAttribute("valor", valor);
 		request.setAttribute("saldoAtual", account.getSaldo());
 		
-		extrato.setTipoExtrato("Saque");
-		extrato.setValor(-valor);
-		extrato.setSaldoMomento(account.getSaldo());
-		extrato.setConta(account);
-		extrato.setDataCadastro(dataAtual);
-		
+		Date dataAtual = new Date();
+		Extrato extrato = new Extrato("Saque", -valor, account.getSaldo(), account, dataAtual);
+				
 		banco.adicionaExtrato(extrato);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/SaqueMsg.jsp");

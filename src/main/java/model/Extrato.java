@@ -9,6 +9,14 @@ public class Extrato {
 	private Conta conta;
 	private Date dataCadastro;
 	
+	public Extrato(String tipo, double valor, double saldoMomento, Conta conta, Date dataAtual) {
+		this.tipoExtrato = tipo;
+		this.valor = valor;
+		this.saldoMomento = saldoMomento;
+		this.conta = conta;
+		this.dataCadastro = dataAtual;
+	}
+	
 	public String getTipoExtrato() {
 		return tipoExtrato;
 	}
