@@ -23,10 +23,8 @@ public class Deposite extends HttpServlet {
 		
 		String inputConta = request.getParameter("conta");
 		int conta = Integer.parseInt(inputConta);
-		
-		List<Conta> lista = banco.getContas();
-		
-		Conta account = banco.getContaByAccount(lista, conta);
+				
+		Conta account = banco.getContaByAccount(conta);
 		
 		request.setAttribute("conta", account.getConta());
 		request.setAttribute("saldo", account.getSaldo());
@@ -39,7 +37,6 @@ public class Deposite extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Banco banco = new Banco();
-		List<Conta> lista = banco.getContas();
 		
 		String inputValor = request.getParameter("valor");
 		String inputConta = request.getParameter("conta");
@@ -47,7 +44,7 @@ public class Deposite extends HttpServlet {
 		double valor = Double.parseDouble(inputValor);
 		int conta = Integer.parseInt(inputConta);
 		
-		Conta account = banco.getContaByAccount(lista, conta);
+		Conta account = banco.getContaByAccount(conta);
 		
 		account.deposita(valor);
 		request.setAttribute("conta", conta);

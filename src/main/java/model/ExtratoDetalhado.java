@@ -20,11 +20,8 @@ public class ExtratoDetalhado extends HttpServlet {
 		String inputConta = request.getParameter("conta");
 		int conta = Integer.parseInt(inputConta);
 		
-		List<Conta> lista = banco.getContas();
-		List<Extrato> listaExtratos = banco.getExtratos();
-		
-		Conta account = banco.getContaByAccount(lista, conta);
-		List<Extrato> extratos = banco.getExtratoByAccount(listaExtratos, account);
+		Conta account = banco.getContaByAccount(conta);
+		List<Extrato> extratos = banco.getExtratoByAccount(account);
 		
 		request.setAttribute("conta", account.getConta());
 		request.setAttribute("extratos", extratos);

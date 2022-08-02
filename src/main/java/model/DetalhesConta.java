@@ -21,12 +21,10 @@ public class DetalhesConta extends HttpServlet {
 		Banco banco = new Banco();
 		String inputConta = request.getParameter("conta");
 		int conta = Integer.parseInt(inputConta);
-				
-		List<Conta> lista = banco.getContas();
-		
+						
 		RequestDispatcher rd = request.getRequestDispatcher("/DetalhesConta.jsp");
         
-		Conta account = banco.getContaByAccount(lista, conta);
+		Conta account = banco.getContaByAccount(conta);
 		
 		request.setAttribute("nome", account.getTitular().getNome());
 		request.setAttribute("agencia", "000"+account.getAgencia());

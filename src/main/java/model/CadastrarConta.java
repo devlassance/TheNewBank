@@ -2,6 +2,7 @@ package model;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,18 +24,28 @@ public class CadastrarConta extends HttpServlet {
 		 String inputConta = request.getParameter("conta");
 		 
 		 int agencia = Integer.parseInt(inputAgencia);
-		 int conta = Integer.parseInt(inputConta);
 		 
 		 Usuario user = new Usuario();
 		 user.setNome(nome);
 		 
 		 Conta account = new Conta();
+		 Banco banco = new Banco();
+		 
+		 List<Conta> listConta = banco.getContas();
+		 
+		 int conta = account.getConta();
+		 conta += 1;
+		 
+		 if(listConta.size() > 0) {
+			Conta lastConta = listConta.get(listConta.size() - 1);
+			conta = lastConta.getConta();
+			conta += 1;
+		 }
 		 
 		 account.setTitular(user);
 		 account.setAgencia(agencia);
 		 account.setConta(conta);
 		 
-		 Banco banco = new Banco();
 		 
 		 banco.adicionaConta(account);
 		 

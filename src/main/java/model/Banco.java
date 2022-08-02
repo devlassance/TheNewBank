@@ -21,8 +21,8 @@ public class Banco {
 		return this.listaExtrato;
 	}
 	
-	public Conta getContaByAccount(List<Conta> lista, int nrConta) {
-		for (Conta conta : lista) {
+	public Conta getContaByAccount(int nrConta) {
+		for (Conta conta : listaConta) {
 			if(conta.getConta() == nrConta) {
 				return conta;
 			}
@@ -30,11 +30,11 @@ public class Banco {
 		return null;
 	}
 	
-	public List<Extrato> getExtratoByAccount(List<Extrato> lista, Conta conta){
+	public List<Extrato> getExtratoByAccount(Conta conta){
 		
 		List<Extrato> allExtratos = new ArrayList<>();
 		
-		for(Extrato extrato : lista) {
+		for(Extrato extrato : listaExtrato) {
 			if(extrato.getConta() == conta) {
 				allExtratos.add(extrato);
 			}

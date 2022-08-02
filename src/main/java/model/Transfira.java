@@ -19,10 +19,8 @@ public class Transfira extends HttpServlet {
 		Banco banco = new Banco();
 		String inputConta = request.getParameter("conta");
 		int conta = Integer.parseInt(inputConta);
-		
-		List<Conta> lista = banco.getContas();
-		
-		Conta account = banco.getContaByAccount(lista, conta);
+				
+		Conta account = banco.getContaByAccount(conta);
 		
 		request.setAttribute("conta", account.getConta());
 		request.setAttribute("saldo", account.getSaldo());
@@ -34,7 +32,6 @@ public class Transfira extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Banco banco = new Banco();
-		List<Conta> lista = banco.getContas();
 		
 		String inputBeneficiario = request.getParameter("contaBeneficiaria");
 		String inputTitular = request.getParameter("contaTitular");
@@ -45,8 +42,8 @@ public class Transfira extends HttpServlet {
 		double valor = Double.parseDouble(inputValor);
 		
 		
-		Conta beneficiario = banco.getContaByAccount(lista, nrBeneficiario);
-		Conta titular = banco.getContaByAccount(lista, nrTitular);
+		Conta beneficiario = banco.getContaByAccount(nrBeneficiario);
+		Conta titular = banco.getContaByAccount(nrTitular);
 		
 		titular.saca(valor);
 		beneficiario.deposita(valor);
