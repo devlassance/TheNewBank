@@ -14,6 +14,6 @@
 	<li><strong>Conta Beneficiada: </strong> ${contaBeneficiario}</li>
 </ul>
 <p>Seu saldo atual é R$ ${saldoAtual}</p>
-<a href="/TheNewBank/DetalhesConta?conta=${conta}">Voltar para sua conta</a></p>
+<a href="/TheNewBank/Conta/DetalhesConta?conta=${conta}">Voltar para sua conta</a>
 </body>
 </html>

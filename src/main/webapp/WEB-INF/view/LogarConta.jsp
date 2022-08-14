@@ -10,7 +10,7 @@
 <h1>The New Bank</h1>
 <h3>Logue na sua conta</h3>
 
-<form action="DetalhesConta" method="get">
+<form action="/TheNewBank/Conta/DetalhesConta" method="get">
 	Número da conta: <br>
 	
 	<input type="text" name="conta" placeholder="Informe o número da sua conta"><br>

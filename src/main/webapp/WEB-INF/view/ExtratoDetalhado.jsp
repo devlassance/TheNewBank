@@ -34,6 +34,6 @@
 	<hr>
 </c:forEach>
 	
-<a href="/TheNewBank/DetalhesConta?conta=${conta}">Voltar para sua conta</a>
+<a href="/TheNewBank/Conta/DetalhesConta/?conta=${conta}">Voltar para sua conta</a>
 </body>
 </html>

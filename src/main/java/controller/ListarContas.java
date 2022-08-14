@@ -10,11 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import interfaces.Acao;
 import model.Banco;
 import model.Conta;
 
 @WebServlet(urlPatterns="/ListarContas")
-public class ListarContas extends HttpServlet {
+public class ListarContas extends HttpServlet implements Acao  {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -39,7 +40,20 @@ public class ListarContas extends HttpServlet {
 		out.println("</ul>");
 
 		out.println("</html></body>");
+		
 	}
+	
+	public String executa(HttpServletRequest request, HttpServletResponse response, Banco banco) throws ServletException, IOException {
+
+        System.out.println("listando empresas");
+
+        List<Conta> lista = banco.getContas();
+
+        request.setAttribute("empresas", lista);
+        
+        return "forward:/listaEmpresas.jsp";
+
+    }
 
 
 }

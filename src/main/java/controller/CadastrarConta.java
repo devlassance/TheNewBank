@@ -4,28 +4,21 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import interfaces.Acao;
 import model.Banco;
 import model.Conta;
 import model.Usuario;
 
-@WebServlet(urlPatterns="/CadastrarConta")
-public class CadastrarConta extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+public class CadastrarConta implements Acao {
+	public String executa(HttpServletRequest request, HttpServletResponse response, Banco banco) throws ServletException, IOException{
 		PrintWriter out = response.getWriter();
 		
 		 String nome = request.getParameter("nome");
 		 String inputAgencia = request.getParameter("agencia");
-		 String inputConta = request.getParameter("conta");
 		 
 		 int agencia = Integer.parseInt(inputAgencia);
 		 
@@ -33,7 +26,6 @@ public class CadastrarConta extends HttpServlet {
 		 user.setNome(nome);
 		 
 		 Conta account = new Conta();
-		 Banco banco = new Banco();
 		 
 		 List<Conta> listConta = banco.getContas();
 		 
@@ -53,12 +45,7 @@ public class CadastrarConta extends HttpServlet {
 		 
 		 banco.adicionaConta(account);
 		 
-		 RequestDispatcher rd = request.getRequestDispatcher("/UsuarioCadastrado.jsp");
-         request.setAttribute("conta", conta);
-         rd.forward(request, response);
-		 
-		 
-		 
+		 return "redirect:DetalhesConta/?conta="+conta;
 	}
 
 }

@@ -3,23 +3,20 @@ package controller;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import interfaces.Acao;
 import model.Banco;
 import model.Conta;
 import model.Extrato;
 
-@WebServlet(urlPatterns="/ExtratoDetalhado")
-public class ExtratoDetalhado extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class ExtratoDetalhado implements Acao {
        
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Banco banco = new Banco();
+	@Override
+	public String executa(HttpServletRequest request, HttpServletResponse response, Banco banco)
+			throws ServletException, IOException {
 		
 		String inputConta = request.getParameter("conta");
 		int conta = Integer.parseInt(inputConta);
@@ -29,10 +26,8 @@ public class ExtratoDetalhado extends HttpServlet {
 		
 		request.setAttribute("conta", account.getConta());
 		request.setAttribute("extratos", extratos);
-	
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/ExtratoDetalhado.jsp");
-		rd.forward(request, response);
+		return "forward:ExtratoDetalhado.jsp";
 	}
 
 }
