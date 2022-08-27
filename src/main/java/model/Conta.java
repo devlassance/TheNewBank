@@ -1,7 +1,7 @@
 package model;
 
 public class Conta {
-	private int agencia;
+	private int agencia = 1;
 	private int conta = 1000;
 	private double saldo = 0;
 	private Usuario titular;

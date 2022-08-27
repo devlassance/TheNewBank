@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import interfaces.Acao;
 import model.Banco;
@@ -21,34 +22,37 @@ public class Saque implements Acao {
 		
 		boolean isPost = "POST".equals(request.getMethod());
 		
-		String inputConta = request.getParameter("conta");
-		int conta = Integer.parseInt(inputConta);
+		HttpSession sessao = request.getSession();
 		
-		if(isPost) {
-			String inputValor = request.getParameter("valor");
+		if(sessao.getAttribute("contaLogada") != null) {
+			Conta account = (Conta)sessao.getAttribute("contaLogada");
 			
-			double valor = Double.parseDouble(inputValor);
-			
-			Conta account = banco.getContaByAccount(conta);
-			
-			account.saca(valor);
-			request.setAttribute("conta", conta);
-			request.setAttribute("valor", valor);
-			request.setAttribute("saldoAtual", account.getSaldo());
-			
-			Date dataAtual = new Date();
-			Extrato extrato = new Extrato("Saque", -valor, account.getSaldo(), account, dataAtual);
-					
-			banco.adicionaExtrato(extrato);
-			
-			return "forward:SaqueMsg.jsp";
-		}
+			if(isPost) {
+				String inputValor = request.getParameter("valor");
 				
-		Conta account = banco.getContaByAccount(conta);
+				double valor = Double.parseDouble(inputValor);
+				
+				
+				account.saca(valor);
+				request.setAttribute("conta", account.getConta());
+				request.setAttribute("valor", valor);
+				request.setAttribute("saldoAtual", account.getSaldo());
+				
+				Date dataAtual = new Date();
+				Extrato extrato = new Extrato("Saque", -valor, account.getSaldo(), account, dataAtual);
+						
+				banco.adicionaExtrato(extrato);
+				
+				return "forward:SaqueMsg.jsp";
+			}
+			
+			request.setAttribute("conta", account.getConta());
+			request.setAttribute("saldo", account.getSaldo());
+			return "forward:Saque.jsp";
+		}
 		
-		request.setAttribute("conta", account.getConta());
-		request.setAttribute("saldo", account.getSaldo());
-		return "forward:Saque.jsp";
+		return "redirect:/TheNewBank";
+		
 	}
 
 }

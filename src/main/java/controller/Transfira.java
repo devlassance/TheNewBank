@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import interfaces.Acao;
 import model.Banco;
@@ -20,49 +21,50 @@ public class Transfira implements Acao {
 		
 		boolean isPost = "POST".equals(request.getMethod());
 		
-		if(isPost) {
-			String inputBeneficiario = request.getParameter("contaBeneficiaria");
-			String inputTitular = request.getParameter("contaTitular");
-			String inputValor = request.getParameter("valor");
+		HttpSession sessao = request.getSession();
+		
+		if(sessao.getAttribute("contaLogada") != null) {
+			Conta titular = (Conta)sessao.getAttribute("contaLogada");
 			
-			int nrBeneficiario = Integer.parseInt(inputBeneficiario);
-			int nrTitular = Integer.parseInt(inputTitular);
-			double valor = Double.parseDouble(inputValor);
-			
-			
-			Conta beneficiario = banco.getContaByAccount(nrBeneficiario);
-			Conta titular = banco.getContaByAccount(nrTitular);
-			
-			titular.saca(valor);
-			beneficiario.deposita(valor);
-			
-			request.setAttribute("conta", nrTitular);
-			request.setAttribute("valor", valor);
-			request.setAttribute("saldoAtual", titular.getSaldo());
-			
-			request.setAttribute("nomeBeneficiario", beneficiario.getTitular().getNome());
-			request.setAttribute("contaBeneficiario", beneficiario.getConta());
+			if(isPost) {
+				String inputBeneficiario = request.getParameter("contaBeneficiaria");
+				String inputValor = request.getParameter("valor");
 				
-			Date dataAtual = new Date();
-			
-			Extrato extrato = new Extrato("Transferência", -valor, titular.getSaldo(), titular, dataAtual);
-			Extrato extratoBeneficiario = new Extrato("Transferência", valor, beneficiario.getSaldo(), beneficiario, dataAtual);
+				int nrBeneficiario = Integer.parseInt(inputBeneficiario);
+				double valor = Double.parseDouble(inputValor);
+				
+				
+				Conta beneficiario = banco.getContaByAccount(nrBeneficiario);
+				
+				titular.saca(valor);
+				beneficiario.deposita(valor);
+				
+				request.setAttribute("conta", titular.getConta());
+				request.setAttribute("valor", valor);
+				request.setAttribute("saldoAtual", titular.getSaldo());
+				
+				request.setAttribute("nomeBeneficiario", beneficiario.getTitular().getNome());
+				request.setAttribute("contaBeneficiario", beneficiario.getConta());
 					
-			banco.adicionaExtrato(extrato);
-			banco.adicionaExtrato(extratoBeneficiario);
-			
-			return "forward:TransfiraMsg.jsp";
-		}
+				Date dataAtual = new Date();
 				
-		String inputConta = request.getParameter("conta");
-		int conta = Integer.parseInt(inputConta);
+				Extrato extrato = new Extrato("Transferência", -valor, titular.getSaldo(), titular, dataAtual);
+				Extrato extratoBeneficiario = new Extrato("Transferência", valor, beneficiario.getSaldo(), beneficiario, dataAtual);
+						
+				banco.adicionaExtrato(extrato);
+				banco.adicionaExtrato(extratoBeneficiario);
+				
+				return "forward:TransfiraMsg.jsp";
+			}
+			
+			request.setAttribute("conta", titular.getConta());
+			request.setAttribute("saldo", titular.getSaldo());
+			
+			return "forward:Transfira.jsp";
+		}
 		
-		Conta account = banco.getContaByAccount(conta);
+		return "redirect:/TheNewBank";
 		
-		request.setAttribute("conta", account.getConta());
-		request.setAttribute("saldo", account.getSaldo());
-		
-		return "forward:Transfira.jsp";
 	}
 	
 

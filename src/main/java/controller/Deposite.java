@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import interfaces.Acao;
 import model.Banco;
@@ -19,38 +20,38 @@ public class Deposite implements Acao {
 		
 		
 		boolean isPost = "POST".equals(request.getMethod());
-		String inputConta = request.getParameter("conta");
-		int conta = Integer.parseInt(inputConta);
 		
-		if(isPost) {
+		HttpSession sessao = request.getSession();
+		
+		if(sessao.getAttribute("contaLogada") != null) {
+			Conta account = (Conta)sessao.getAttribute("contaLogada");
+			if(isPost) {
+				
+				String inputValor = request.getParameter("valor");
+				double valor = Double.parseDouble(inputValor);
+				
+				account.deposita(valor);
+				request.setAttribute("conta", account.getConta());
+				request.setAttribute("valor", valor);
+				request.setAttribute("saldoAtual", account.getSaldo());
+				
+				Date dataAtual = new Date();
+				Extrato extrato = new Extrato("Deposito", valor, account.getSaldo(), account, dataAtual);
+			    
+				banco.adicionaExtrato(extrato);
+				
+				return "forward:DepositeMsg.jsp";
+				
+			}
+							
+			request.setAttribute("conta", account.getConta());
+			request.setAttribute("saldo", account.getSaldo());
 			
-			String inputValor = request.getParameter("valor");
-			double valor = Double.parseDouble(inputValor);
 			
-			Conta account = banco.getContaByAccount(conta);
-			
-			account.deposita(valor);
-			request.setAttribute("conta", conta);
-			request.setAttribute("valor", valor);
-			request.setAttribute("saldoAtual", account.getSaldo());
-			
-			Date dataAtual = new Date();
-			Extrato extrato = new Extrato("Deposito", valor, account.getSaldo(), account, dataAtual);
-		    
-			banco.adicionaExtrato(extrato);
-			
-			return "forward:DepositeMsg.jsp";
-			
-			
+			return "forward:Deposite.jsp";
 		}
-			
-		Conta account = banco.getContaByAccount(conta);
 		
-		request.setAttribute("conta", account.getConta());
-		request.setAttribute("saldo", account.getSaldo());
-		
-		
-		return "forward:Deposite.jsp";
+		return "redirect:/TheNewBank";
 		
 		
 		

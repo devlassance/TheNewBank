@@ -10,6 +10,6 @@
 <h1>The New Bank</h1>
 
 <p>Valor de R$ ${valor} depositado com sucesso! seu saldo atual é R$ ${saldoAtual}, volte para sua conta 
-<a href="/TheNewBank/Conta/DetalhesConta?conta=${conta}">Aqui</a></p>
+<a href="/TheNewBank/Conta/DetalhesConta">Aqui</a></p>
 </body>
 </html>

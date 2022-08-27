@@ -2,6 +2,7 @@ package model;
 
 public class Usuario {
 	private String nome;
+	private String senha;
 
 	public String getNome() {
 		return nome;
@@ -9,6 +10,14 @@ public class Usuario {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+	
+	public String getSenha() {
+		return this.senha;
 	}
 	
 }

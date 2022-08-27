@@ -30,6 +30,19 @@ public class Banco {
 		return null;
 	}
 	
+	public boolean authAccount(int nrConta, int nrAgencia, String password) {
+		
+		for(Conta conta : listaConta) {
+				
+			
+			if(conta.getConta() == nrConta && conta.getAgencia() == nrAgencia && conta.getTitular().getSenha().equals(password)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public List<Extrato> getExtratoByAccount(Conta conta){
 		
 		List<Extrato> allExtratos = new ArrayList<>();

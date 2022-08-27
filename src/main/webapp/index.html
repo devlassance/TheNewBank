@@ -2,22 +2,29 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>The New Bank</title>
+<title>The New Bank - Logar</title>
 </head>
 <body>
-<h1>The new Bank</h1>
-<h3>Cadastre sua conta</h3>
+<h1>The New Bank</h1>
+<h3>Logue na sua conta</h3>
 
-	<form action="Conta/CadastrarConta" method="post">
-	
-		Seu nome: <br>
-		<input type="text" name="nome"> <br>
+	<form action="/TheNewBank/Conta/LogarConta" method="post">
+		Número da conta: <br>
 		
-		Sua Agencia: <br>
-		<input type="text" name="agencia" value="0001"> <br>
+		<input type="text" name="conta" placeholder="Sua conta"><br>
 		<br>
-		<input type="submit" value="Cadastrar">
+		Número da agencia: <br>
+		<input type="text" name="agencia" placeholder="Sua agencia"><br>
+		<br>
+		
+		Sua senha de acesso: <br>
+		<input type="password" name="senha" placeholder="Sua senha de acesso"><br>
+		<br>
+		
+		<input type="submit" value="Logar">
+		
 	</form>
-	<a href="LogarConta">Logar numa conta existência</a>
+	
+	<p>Ainda não possui uma conta? <a href="Conta/CadastrarConta">Cadastre-se</a></p>
 </body>
 </html>

@@ -21,10 +21,10 @@
 
 <hr>
 
-<a href="/TheNewBank/Conta/Deposite?conta=${conta}">Deposite um valor</a> -
-<a href="/TheNewBank/Conta/Saque?conta=${conta}">Saque um valor</a> -
-<a href="/TheNewBank/Conta/Transfira?conta=${conta}">Transfira um valor</a> -
-<a href="/TheNewBank/Conta/ExtratoDetalhado?conta=${conta}">Extrato Detalhado</a>
+<a href="/TheNewBank/Conta/Deposite">Deposite um valor</a> -
+<a href="/TheNewBank/Conta/Saque">Saque um valor</a> -
+<a href="/TheNewBank/Conta/Transfira">Transfira um valor</a> -
+<a href="/TheNewBank/Conta/ExtratoDetalhado">Extrato Detalhado</a>
 
 <hr>
 
