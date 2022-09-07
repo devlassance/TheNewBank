@@ -35,7 +35,7 @@ public class CadastrarConta implements Acao {
 	
 			 int conta = 1001;
 			 //nome da tabela, coluna de busca, parametro de busca e tipagem
-			 int lastConta = (int)banco.getDataByType("SELECT * FROM Contas ORDER BY id DESC LIMIT 1", "id", "int");
+			 int lastConta = (int)banco.getDataByType("SELECT * FROM Contas ORDER BY id DESC LIMIT 1", "nr_conta", "int");
 			 if(lastConta != 0 ) {
 				 conta = lastConta + 1;
 			 }

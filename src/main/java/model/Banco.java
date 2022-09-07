@@ -5,27 +5,36 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import connectionDb.ConnectionDb;
 
 public class Banco {
-	private static List<Conta> listaConta = new ArrayList<>();
 	private static List<Extrato> listaExtrato = new ArrayList<>();
-	
-	public int insert(String table, ArrayList<String> collumArray, ArrayList<String> dataArray) {
 		
+	public int insert(String table, HashMap<String, String> dataDb) {
 		int id = 0;
 		Statement stm = null;
 		Connection con = null;
-		
-		String collum = String.join(",", collumArray);
-		String data = String.join(",", dataArray);
 		
 		ConnectionDb ConnectionDb = new ConnectionDb();
 		try {
 			con = ConnectionDb.connection();
 			stm =  con.createStatement();
+			
+			ArrayList<String> collumArray = new ArrayList<String>();
+			ArrayList<String> dataArray = new ArrayList<String>();
+			
+			//Quebrando hashmap, separando key de value e passando para o list
+			for (String i : dataDb.keySet()) {
+				collumArray.add(i);
+				dataArray.add(dataDb.get(i));
+			}
+			
+			//quebrando o arrayList e passando para os formatos de sql
+			String collum = String.join(",", collumArray);
+			String data = String.join(",", dataArray);
 			
 			stm.execute("INSERT INTO "+table+" ("+collum+") VALUES ("+data+")", Statement.RETURN_GENERATED_KEYS);
 			ResultSet rst = stm.getGeneratedKeys();
@@ -132,41 +141,13 @@ public class Banco {
 		
 	}
 	
-	public void adicionaConta(Conta conta) {
-		listaConta.add(conta);
-	}
-	public List<Conta> getContas(){
-		return this.listaConta;
-	}
-	
 	public void adicionaExtrato(Extrato extrato) {
 		listaExtrato.add(extrato);
 	}
 	public List<Extrato> getExtratos(){
 		return this.listaExtrato;
 	}
-	
-	public Conta getContaByAccount(int nrConta) {
-		for (Conta conta : listaConta) {
-			if(conta.getConta() == nrConta) {
-				return conta;
-			}
-		}
-		return null;
-	}
-	
-	public boolean authAccount(int nrConta, int nrAgencia, String password) {
-		
-		for(Conta conta : listaConta) {
-				
-			
-			if(conta.getConta() == nrConta && conta.getAgencia() == nrAgencia && conta.getTitular().getSenha().equals(password)) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
+
 	
 	public List<Extrato> getExtratoByAccount(Conta conta){
 		

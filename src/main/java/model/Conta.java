@@ -1,6 +1,6 @@
 package model;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Conta {
 	private int agencia = 1;
@@ -42,32 +42,26 @@ public class Conta {
 		this.saldo -= valor;
 	}
 	
+	
 	public void insertContaDb() {
+		
 		Banco banco = new Banco();
-		ArrayList<String> arrayColuna = new ArrayList<String>();
-		ArrayList<String> arrayDados = new ArrayList<String>(); 
-		arrayColuna.add("nr_agencia");
-		arrayColuna.add("nr_conta");
-		arrayColuna.add("saldo");
 		
-		arrayDados.add("'"+this.agencia+"'");
-		arrayDados.add("'"+this.conta+"'");
-		arrayDados.add("'"+this.saldo+"'");
+		HashMap<String, String> dataConta = new HashMap<String, String>();
 		
-		int idConta = banco.insert("Contas", arrayColuna, arrayDados);
+		dataConta.put("nr_agencia", "'"+this.agencia+"'");
+		dataConta.put("nr_conta", "'"+this.conta+"'");
+		dataConta.put("saldo", "'"+this.saldo+"'");
 		
-		ArrayList<String> arrayColunaUser = new ArrayList<String>();
-		ArrayList<String> arrayDadosUser = new ArrayList<String>();
+		int idConta = banco.insert("Contas", dataConta);
 		
-		arrayColunaUser.add("nome");
-		arrayColunaUser.add("senha");
-		arrayColunaUser.add("id_conta");
+		HashMap<String, String> dataUser = new HashMap<String, String>();
 		
-		arrayDadosUser.add("'"+this.getTitular().getNome()+"'");
-		arrayDadosUser.add("'"+this.getTitular().getSenha()+"'");	
-		arrayDadosUser.add("'"+idConta+"'");
+		dataUser.put("nome", "'"+this.getTitular().getNome()+"'");
+		dataUser.put("senha", "'"+this.getTitular().getSenha()+"'");
+		dataUser.put("id_conta", "'"+idConta+"'");
 		
-		banco.insert("Usuarios", arrayColunaUser, arrayDadosUser);
+		banco.insert("Usuarios", dataUser);
 		
 	}
 }

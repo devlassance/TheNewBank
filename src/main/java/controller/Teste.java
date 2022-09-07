@@ -32,7 +32,6 @@ public class Teste {
 		Statement stm =  con.createStatement();
 		stm.execute("INSERT INTO departamento ("+colunas+") VALUES ("+dados+")", Statement.RETURN_GENERATED_KEYS);
 		
-		//ResultSet rst = stm.getResultSet();
 		ResultSet rst = stm.getGeneratedKeys();
 		
 		while(rst.next()) {
