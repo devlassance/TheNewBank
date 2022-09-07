@@ -2,6 +2,8 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -17,9 +19,7 @@ import model.Usuario;
 public class CadastrarConta implements Acao {
 	public String executa(HttpServletRequest request, HttpServletResponse response, Banco banco) throws ServletException, IOException{
 		
-		
 		boolean isPost = "POST".equals(request.getMethod());
-
 		
 		if(isPost) {
 			 String nome = request.getParameter("nome");
@@ -32,21 +32,19 @@ public class CadastrarConta implements Acao {
 			 
 			 Conta account = new Conta();
 			 
-			 List<Conta> listConta = banco.getContas();
-			 
-			 int conta = account.getConta();
-			 conta += 1;
-			 
-			 if(listConta.size() > 0) {
-				Conta lastConta = listConta.get(listConta.size() - 1);
-				conta = lastConta.getConta();
-				conta += 1;
+	
+			 int conta = 1001;
+			 //nome da tabela, coluna de busca, parametro de busca e tipagem
+			 int lastConta = (int)banco.getDataByType("SELECT * FROM Contas ORDER BY id DESC LIMIT 1", "id", "int");
+			 if(lastConta != 0 ) {
+				 conta = lastConta + 1;
 			 }
 			 
 			 account.setTitular(user);
 			 account.setConta(conta);
 			 
-			 banco.adicionaConta(account);
+			 account.insertContaDb();
+			 
 			 
 			 HttpSession sessao = request.getSession();
 		     sessao.setAttribute("contaLogada", account);

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import interfaces.Acao;
 import model.Banco;
 import model.Conta;
@@ -48,7 +50,7 @@ public class ListarContas extends HttpServlet implements Acao  {
         System.out.println("listando empresas");
 
         List<Conta> lista = banco.getContas();
-
+        
         request.setAttribute("empresas", lista);
         
         return "forward:/listaEmpresas.jsp";

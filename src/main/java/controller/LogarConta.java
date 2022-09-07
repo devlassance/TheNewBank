@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import interfaces.Acao;
 import model.Banco;
 import model.Conta;
+import model.Usuario;
 
 public class LogarConta implements Acao {
 
@@ -27,15 +28,22 @@ public class LogarConta implements Acao {
 			int nrConta = Integer.parseInt(inputConta);
 			int nrAgencia = Integer.parseInt(inputAgencia);
 			
-			if(banco.authAccount(nrConta, nrAgencia, password)) {
+			int idValido = (int)banco.getDataByType("SELECT C.id as idConta FROM Contas C "
+					+ "INNER JOIN Usuarios U "
+					+ "ON U.id_conta = C.id AND C.nr_agencia = "+nrAgencia+" AND C.nr_conta = "+nrConta+" AND senha = '"+password+"'", 
+					"idConta", "int");         
+			
+		
+			if(idValido > 0) {
 				
-				//Setando a conta logada dentro da sessão
-				Conta conta = banco.getContaByAccount(nrConta);
+				Conta contaValida = banco.setContaByValidId(idValido);
+				
 				HttpSession sessao = request.getSession();
-			    sessao.setAttribute("contaLogada", conta);
+			    sessao.setAttribute("contaLogada", contaValida);
 				
 				return "redirect:DetalhesConta";
 			}
+			
 		}
 		return "redirect:/TheNewBank";
 	}
