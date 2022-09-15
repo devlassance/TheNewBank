@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -23,7 +24,7 @@ public class ExtratoDetalhado implements Acao {
 		
 		if(sessao.getAttribute("contaLogada") != null) {
 			Conta account = (Conta)sessao.getAttribute("contaLogada");
-			List<Extrato> extratos = banco.getExtratoByAccount(account);
+			ArrayList<Extrato> extratos = banco.getExtratos(account.getId());
 			
 			request.setAttribute("conta", account.getConta());
 			request.setAttribute("extratos", extratos);

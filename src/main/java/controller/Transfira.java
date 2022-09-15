@@ -27,32 +27,36 @@ public class Transfira implements Acao {
 			Conta titular = (Conta)sessao.getAttribute("contaLogada");
 			
 			if(isPost) {
-				String inputBeneficiario = request.getParameter("contaBeneficiaria");
+				String contaBeneficiario = request.getParameter("contaBeneficiario");
+				String agenciaBeneficiario = request.getParameter("agenciaBeneficiario");
 				String inputValor = request.getParameter("valor");
 				
-				int nrBeneficiario = Integer.parseInt(inputBeneficiario);
+				int nrContaBenefeciario = Integer.parseInt(contaBeneficiario);
+				int nrAgenciaBeneficiario = Integer.parseInt(agenciaBeneficiario);
+				
 				double valor = Double.parseDouble(inputValor);
+				double valorNegativado = valor * -1;
 				
+				banco.setDataByParam("UPDATE Contas SET saldo = saldo - "+valor+" WHERE id = "+titular.getId());
+				banco.setDataByParam("UPDATE Contas SET saldo = saldo + "+valor+" WHERE "
+						+ "nr_agencia = "+nrAgenciaBeneficiario+" AND nr_conta = "+nrContaBenefeciario);
 				
-				Conta beneficiario = banco.getContaByAccount(nrBeneficiario);
+				int idBeneficiario = (int)banco.getDataByType("SELECT id FROM Contas "
+						+ "WHERE nr_agencia = "+nrAgenciaBeneficiario+" and nr_conta = "+nrContaBenefeciario,
+						"id", "int");
 				
 				titular.saca(valor);
-				beneficiario.deposita(valor);
+				Conta beneficiario = banco.setContaByValidId(idBeneficiario);
 				
+				banco.setExtrato(3, valorNegativado, titular.getSaldo(), titular.getId());
+				banco.setExtrato(3, valor, beneficiario.getSaldo(), beneficiario.getId());
+							
 				request.setAttribute("conta", titular.getConta());
 				request.setAttribute("valor", valor);
 				request.setAttribute("saldoAtual", titular.getSaldo());
 				
-				request.setAttribute("nomeBeneficiario", beneficiario.getTitular().getNome());
-				request.setAttribute("contaBeneficiario", beneficiario.getConta());
-					
-				Date dataAtual = new Date();
-				
-				Extrato extrato = new Extrato("Transferência", -valor, titular.getSaldo(), titular, dataAtual);
-				Extrato extratoBeneficiario = new Extrato("Transferência", valor, beneficiario.getSaldo(), beneficiario, dataAtual);
-						
-				banco.adicionaExtrato(extrato);
-				banco.adicionaExtrato(extratoBeneficiario);
+				request.setAttribute("contaBeneficiario", nrContaBenefeciario);
+				request.setAttribute("agenciaBeneficiario", nrAgenciaBeneficiario);
 				
 				return "forward:TransfiraMsg.jsp";
 			}

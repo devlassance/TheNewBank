@@ -12,6 +12,7 @@
 <ul>
 	<li><strong>Valor Transferido: </strong> R$ ${valor}</li>
 	<li><strong>Conta Beneficiada: </strong> ${contaBeneficiario}</li>
+	<li><strong>Agencia Beneficiada: </strong> ${agenciaBeneficiario}</li>
 </ul>
 <p>Seu saldo atual é R$ ${saldoAtual}</p>
 <a href="/TheNewBank/Conta/DetalhesConta">Voltar para sua conta</a>

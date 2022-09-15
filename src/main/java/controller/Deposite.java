@@ -30,15 +30,15 @@ public class Deposite implements Acao {
 				String inputValor = request.getParameter("valor");
 				double valor = Double.parseDouble(inputValor);
 				
+				
+				banco.setDataByParam("UPDATE Contas SET saldo = saldo + "+valor+" WHERE id = "+account.getId());
 				account.deposita(valor);
+				
+				banco.setExtrato(1, valor, account.getSaldo(), account.getId());
+			
 				request.setAttribute("conta", account.getConta());
 				request.setAttribute("valor", valor);
 				request.setAttribute("saldoAtual", account.getSaldo());
-				
-				Date dataAtual = new Date();
-				Extrato extrato = new Extrato("Deposito", valor, account.getSaldo(), account, dataAtual);
-			    
-				banco.adicionaExtrato(extrato);
 				
 				return "forward:DepositeMsg.jsp";
 				

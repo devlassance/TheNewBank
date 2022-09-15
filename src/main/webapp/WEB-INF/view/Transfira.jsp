@@ -16,8 +16,10 @@
 <form action="Transfira" method="post">
 
 	Conta Beneficiário: <br>
-	<input type="text" name="contaBeneficiaria"><br>
-	<input type="hidden" name="contaTitular" value="${conta}">
+	<input type="text" name="contaBeneficiario"><br>
+	
+	Agência Beneficário: <br>
+	<input type="text" name="agenciaBeneficiario"><br>
 	
 	Valor a ser Transferido: <br>
 	<input type="text" name="valor"><br>

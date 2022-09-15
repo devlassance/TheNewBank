@@ -1,6 +1,7 @@
 package http;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -24,7 +25,8 @@ public class Teste extends HttpServlet {
  		
  		Banco banco = new Banco();
  		
- 		List<Conta> lista = banco.getContas();
+ 		//List<Conta> lista = banco.getContas();
+ 		ArrayList<String> lista = null;
  		
  		Gson gson = new Gson();
         String json = gson.toJson(lista); 

@@ -3,6 +3,7 @@ package model;
 import java.util.Date;
 
 public class Extrato {
+	private int id;
 	private String tipoExtrato;
 	private double valor;
 	private double saldoMomento;
@@ -46,5 +47,13 @@ public class Extrato {
 	}
 	public void setDataCadastro(Date dataCadastro) {
 		this.dataCadastro = dataCadastro;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

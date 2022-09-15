@@ -3,6 +3,7 @@ package model;
 import java.util.HashMap;
 
 public class Conta {
+	private int id;
 	private int agencia = 1;
 	private int conta = 1000;
 	private double saldo = 0;
@@ -61,7 +62,16 @@ public class Conta {
 		dataUser.put("senha", "'"+this.getTitular().getSenha()+"'");
 		dataUser.put("id_conta", "'"+idConta+"'");
 		
-		banco.insert("Usuarios", dataUser);
+		int idUser = banco.insert("Usuarios", dataUser);
+	
+		this.setId(idConta);
+		this.getTitular().setId(idUser);
 		
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 }

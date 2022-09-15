@@ -32,17 +32,18 @@ public class Saque implements Acao {
 				
 				double valor = Double.parseDouble(inputValor);
 				
+				banco.setDataByParam("UPDATE Contas SET saldo = saldo - "+valor+" WHERE id = "+account.getId());
 				
 				account.saca(valor);
+				
+				double valorNegativado = valor * -1;
+				
+				banco.setExtrato(2, valorNegativado, account.getSaldo(), account.getId());
+				
 				request.setAttribute("conta", account.getConta());
 				request.setAttribute("valor", valor);
 				request.setAttribute("saldoAtual", account.getSaldo());
-				
-				Date dataAtual = new Date();
-				Extrato extrato = new Extrato("Saque", -valor, account.getSaldo(), account, dataAtual);
-						
-				banco.adicionaExtrato(extrato);
-				
+ 				
 				return "forward:SaqueMsg.jsp";
 			}
 			
